@@ -160,16 +160,18 @@ class SwaggerService
         $this->uri = "/{$this->getUri()}";
         $this->method = strtolower($this->request->getMethod());
 
-        if (empty(Arr::get($this->data, "paths.{$this->uri}.{$this->method}"))) {
-            $this->data['paths'][$this->uri][$this->method] = [
-                'tags' => [],
-                'consumes' => [],
-                'produces' => [],
-                'parameters' => $this->getPathParams(),
-                'responses' => [],
-                'security' => [],
-                'description' => ''
-            ];
+        if (empty(array_get($this->data, "paths.{$this->uri}.{$this->method}"))) {
+            if (!isset($this->data['paths'][$this->uri][$this->method])) {
+                $this->data['paths'][$this->uri][$this->method] = [
+                    'tags' => [],
+                    'consumes' => [],
+                    'produces' => [],
+                    'parameters' => $this->getPathParams(),
+                    'responses' => [],
+                    'security' => [],
+                    'description' => ''
+                ];
+            }
         }
 
         $this->item = &$this->data['paths'][$this->uri][$this->method];
